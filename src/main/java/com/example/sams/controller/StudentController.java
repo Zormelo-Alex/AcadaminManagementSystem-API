@@ -3,7 +3,9 @@ package com.example.sams.controller;
 import com.example.sams.dto.StudentAddRequest;
 import com.example.sams.model.Student;
 import com.example.sams.model.StudentProgrammes;
+import com.example.sams.model.User;
 import com.example.sams.services.StudentService;
+import com.example.sams.services.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/addStudent")
     public ResponseEntity<?> createStudent(@RequestBody StudentAddRequest request) {
@@ -176,7 +180,6 @@ public class StudentController {
                         "type", "student.undefer.error",
                         "message", "Student not found"));
             }
-            //update User accountDissabled
             existingStudent.setCompletionStatus(1);
             StudentProgrammes updatedStudent = studentService.updateStudentProgrammes(existingStudent);
             return ResponseEntity.status(200).body(Map.of(
@@ -202,6 +205,8 @@ public class StudentController {
                         "message", "Student not found"));
             }
             //update User accountDissabled
+            User existingUser = userService.findUserByUsername(existingStudent.getStudentId());
+            existingUser.setAccountDisabled(true);
             existingStudent.setCompletionStatus(4);
             StudentProgrammes updatedStudent = studentService.updateStudentProgrammes(existingStudent);
             return ResponseEntity.status(200).body(Map.of(
@@ -227,6 +232,9 @@ public class StudentController {
                         "message", "Student not found"));
             }
             //update User accountDissabled
+            User existingUser = userService.findUserByUsername(existingStudent.getStudentId());
+            existingUser.setAccountDisabled(false);
+            userService.updateUser(existingUser);
             existingStudent.setCompletionStatus(1);
             StudentProgrammes updatedStudent = studentService.updateStudentProgrammes(existingStudent);
             return ResponseEntity.status(200).body(Map.of(

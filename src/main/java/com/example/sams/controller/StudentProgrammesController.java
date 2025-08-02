@@ -1,15 +1,23 @@
 package com.example.sams.controller;
 
+import com.example.sams.model.StudentProgrammes;
+import com.example.sams.services.StudentProgrammesServices;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/studentProgrammes")
 public class StudentProgrammesController {
+    @Autowired
+    private StudentProgrammesServices studentProgrammesServices;
 
     @PostMapping("/addStudentProgramme")
-    public ResponseEntity<String> addStudentProgramme(HttpServletRequest request){
+    public ResponseEntity<?> addStudentProgramme(HttpServletRequest request){
         try {
             return ResponseEntity.ok("Coming Soon...");
         }catch (RuntimeException e){
@@ -18,20 +26,28 @@ public class StudentProgrammesController {
     }
 
     @GetMapping("/allStudentProgrammes")
-    public ResponseEntity<String> allStudentProgrammes(HttpServletRequest request){
+    public ResponseEntity<?> allStudentProgrammes(HttpServletRequest request){
         try {
-            return ResponseEntity.ok("Coming Soon...");
+            List<StudentProgrammes> response = studentProgrammesServices.getAllStudentProgrammes();
+            return ResponseEntity.status(200).body(response);
         }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(500).body(Map.of(
+                    "status", false,
+                    "type", "studentProgrammes.get.error",
+                    "message", e.getMessage()));
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getStudentProgramme(@PathVariable String id){
+    public ResponseEntity<?> getStudentProgramme(@PathVariable Long id){
         try {
-            return ResponseEntity.ok("Coming Soon... " + id);
+            StudentProgrammes response = studentProgrammesServices.findStudentProgrammesById(id);
+            return ResponseEntity.status(200).body(response);
         }catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(500).body(Map.of(
+                    "status", false,
+                    "type", "studentProgramme.get.error",
+                    "message", e.getMessage()));
         }
     }
 

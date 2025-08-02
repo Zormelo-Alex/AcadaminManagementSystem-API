@@ -16,4 +16,17 @@ public class ProgrammesService {
     public List<Programmes> getAllProgrammes(){
         return programmesRepository.findAll();
     }
+
+    public Programmes getProgrammeById(Long id){
+        return programmesRepository.getByPGID(id);
+    }
+
+    public Programmes createProgramme(Programmes programmes){
+        if (programmesRepository.getByprogramCode(programmes.getProgramCode()) != null) {
+            throw new RuntimeException("Programme with same ID already exists");
+        }
+        System.out.println(programmes.getProgramName());
+        programmes.setPG_ID(null);
+        return programmesRepository.save(programmes);
+    }
 }

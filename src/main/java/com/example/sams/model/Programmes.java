@@ -10,11 +10,11 @@ public class Programmes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PG_ID")
-    private Long PG_ID;
+    private Long PGID;
 
 
-    @Column(name = "ProgramName")
-    private String ProgramName;
+    @Column(name = "ProgramName", nullable = false)
+    private String programName;
 
     @Column(name = "programCode", length = 5)
     private String programCode;
@@ -44,20 +44,24 @@ public class Programmes {
 
     public Programmes() {}
 
-    public Long getPG_ID() {
-        return PG_ID;
+    public Long getPGID() {
+        return PGID;
     }
 
-    public void setPG_ID(Long PG_ID) {
-        this.PG_ID = PG_ID;
+    public void setPG_ID(Long PGID) {
+        this.PGID = PGID;
+    }
+
+    public void setPGID(Long PGID) {
+        this.PGID = PGID;
     }
 
     public String getProgramName() {
-        return ProgramName;
+        return programName;
     }
 
     public void setProgramName(String programName) {
-        ProgramName = programName;
+        this.programName = programName;
     }
 
     public String getProgramCode() {

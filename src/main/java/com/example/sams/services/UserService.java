@@ -1,5 +1,6 @@
 package com.example.sams.services;
 
+import com.example.sams.model.Tutor;
 import com.example.sams.model.User;
 import com.example.sams.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,18 @@ public class UserService {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setId(null);
+        return userRepository.save(user);
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findUserByid(id);
+    }
+
+    public User updateUser(User user) {
         return userRepository.save(user);
     }
 }
